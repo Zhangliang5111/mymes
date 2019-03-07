@@ -9,7 +9,5 @@ router.get('/', function(req, res, next) {
 // 工时
 router.get('/timetable',function(req,res,next){
   res.render('timetable',{title:'工时统计'});
-  console.log("我是工时页面");
-
 });
 module.exports = router;
