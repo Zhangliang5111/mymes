@@ -12,7 +12,7 @@ Date: 2019-03-07 15:40:00
 -- ----------------------------
 DROP TABLE IF EXISTS `mymes_timetable`;
 CREATE TABLE `mymes_timetable` (
-  `id` varchar(64) NOT NULL DEFAULT '' COMMENT 'ID',
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `projectname` varchar(255) DEFAULT NULL COMMENT '项目名称',
   `worktime` int(11) DEFAULT NULL COMMENT '工时',
   `workdate` varchar(255) DEFAULT NULL COMMENT '日期',

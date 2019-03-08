@@ -30,3 +30,38 @@
     background-color: #4a97ff;
     color: #fff;
 }
+.sublist{
+    width: 90%;
+    margin:0 auto;
+    margin-top: 30px;
+}
+.sublist label{
+    margin-right: 5px;
+    text-align: right;
+    width: 25%;
+    font-size: 14px;
+
+}
+.sublist input,.sublist textarea{
+    width:65%;
+    vertical-align:top;
+    border: 1px solid #dedede;
+    border-radius:5px; 
+}
+.sublist textarea{
+    width:65%;
+    vertical-align:top;
+}
+.btnlist{
+    width:54%;
+    margin: 0 auto;
+    margin-top: 15px;
+}
+.btnlist button{
+    width:70px;
+    height: 30px;
+    background: #4a97ff;
+    border: none;
+    border-radius:5px; 
+    color: #fff;
+}

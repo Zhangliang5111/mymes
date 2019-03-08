@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var db = require('./db/db')
 
 /* 首页 */
 router.get('/', function(req, res, next) {
@@ -10,4 +11,41 @@ router.get('/', function(req, res, next) {
 router.get('/timetable',function(req,res,next){
   res.render('timetable',{title:'工时统计'});
 });
+// 查询列表
+router.post('/list',function(req,res){
+  var sql = 'SELECT * FROM mymes_timetable';
+  db.query(sql,function(err,result){
+    if(!err){
+      res.json(result)
+    }else{
+      console.log("获取信息失败")
+    }
+  })
+  
+});
+router.post('/delete',function(req,res){
+  var ids = req.body.ids;
+  var deSql = 'DELETE FROM mymes_timetable where id in (' +ids+')';
+  db.query(deSql,function(err,result){
+    if(!err){
+      res.json(JSON.stringify(result));
+    }else{
+      console.log("删除失败")
+    }
+  })
+});
+router.post('/save',function(req,res){
+  var projectname = req.body.projectname;
+  var worktime = req.body.worktime;
+  var workdate = req.body.workdate;
+  var description = req.body.description;
+  var addSql = "INSERT INTO mymes_timetable(projectname,worktime,workdate,description) values ('"+projectname+"','"+worktime+"','"+workdate+"','"+description+"')";
+  db.query(addSql,function(err,result){
+    if(!err){
+      res.json(JSON.stringify(result));
+    }else{
+      console.log("新增失败")
+    }
+  })
+})
 module.exports = router;
