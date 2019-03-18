@@ -175,6 +175,7 @@ $("#btn_delete").click(function(){
     if(ids.length == 0){
         layer.msg("请至少选择一条信息")
     }else{
+        layer.confirm('确认要删除信息吗',{btn:['确定','取消']},function(){
         $.ajax({
         url:'/delete',
         type:'post',
@@ -187,6 +188,7 @@ $("#btn_delete").click(function(){
            },500)
         }
     })
+        })
     }
 })
 // 新增列表
@@ -199,6 +201,7 @@ $("#btn_add").click(function(){
         title:'新增',
         content:$(".sublist"),
         success:function(){
+            $(".btnlist button:nth-child(1)").attr("class","savebtn");
             $(".savebtn").click(function(){
                 $.ajax({
                 url:'/save',
@@ -207,6 +210,7 @@ $("#btn_add").click(function(){
                 dataType:'json',
                 success:function(){
                    layer.msg("新增成功")
+                   $(".btnlist button:nth-child(1)").removeClass("savebtn");
                    setTimeout(function(){
                     window.location.href="http://localhost:3300/timetable"
                      },500)
@@ -218,19 +222,82 @@ $("#btn_add").click(function(){
 
     })
 })
+// 编辑
+$("#btn_edit").click(function(){
+    var ids =[];
+    var idSelect = $(".wktlist tbody td input:checkbox:checked");
+    idSelect.each(function(){
+        ids.push($(this).attr("data-id"));
+    })
+    if(ids.length > 1 ){
+        layer.msg("不可以选择多条信息编辑")
+    }else if(ids.length < 1 ){
+        layer.msg("请先选择一条信息进行编辑")
+    }else{
+        layer.open({
+        type: 1,
+        area: ['300px', '300px'],
+        fixed: false, //不固定
+        maxmin: false,
+        title:'新增',
+        content:$(".sublist"),
+        success:function(){
+                $(".btnlist button:nth-child(1)").attr("class","editbtn");
+                $.ajax({
+                url:'/edit',
+                type:'POST',
+                data:{
+                    id:ids.join(",")
+                },
+                dataType:'json',
+                success:function(data){
+                    data = JSON.parse(data)
+                    $("#projectname").val(data[0].projectname);
+                    $("#worktime").val(data[0].worktime);
+                    $("#workdate").val(data[0].workdate);
+                    $("#description").val(data[0].description);
+                  
+                    }     
+                });
+                $(".editbtn").click(function(){
+                    $.ajax({
+                        url:'/updata',
+                        type:'POST',
+                        data:{
+                            id:ids.join(","),
+                            projectname:$("#projectname").val(),
+                            worktime:$("#worktime").val(),
+                            workdate:$("#workdate").val(),
+                            description:$("#description").val(),
+                        },
+                        dataType:'json',
+                        success:function(){
+                            layer.msg("修改成功")
+                            setTimeout(function(){
+                            window.location.href="http://localhost:3300/timetable"
+                            },500)
+                        }
+                    })
+                })
+        }
+
+    })
+    }
+
+})
 </script>
 </body>
 <div class="sublist" style="display:none">
     <label>项目名称</label>
-    <input type="text" name="projectname" id=""><br/>
+    <input type="text" name="projectname" id="projectname"><br/>
     <label>工时(h)</label>
-    <input type="number" name="worktime" id=""><br/>
+    <input type="number" name="worktime" id="worktime"><br/>
     <label>日期</label>
-    <input type="datetime" name="workdate" id=""><br/>
+    <input type="datetime" name="workdate" id="workdate"><br/>
     <label>描述</label>
-    <textarea name="description" id=""></textarea>
+    <textarea name="description" id="description"></textarea>
     <div class="btnlist">
-        <button class="savebtn">保存</button>
+        <button class="">保存</button>
         <button class="closebtn">取消</button>
     </div>
 </div>

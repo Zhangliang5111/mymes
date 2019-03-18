@@ -47,5 +47,34 @@ router.post('/save',function(req,res){
       console.log("新增失败")
     }
   })
+});
+router.post('/edit',function(req,res){
+  var id = req.body.id;
+  console.log(id);
+  var editSql = "SELECT * FROM mymes_timetable  where id ="+id;
+  //console.log(editSql)
+  db.query(editSql,function(err,result){
+    if(!err){
+      res.json(JSON.stringify(result));
+    }else{
+      console.log("查询失败！！")
+    }
+  })
+});
+router.post('/updata',function(req,res){
+  var id = req.body.id;
+  var projectname = req.body.projectname;
+  var worktime = req.body.worktime;
+  var workdate = req.body.workdate;
+  var description = req.body.description;
+  var updataSql = "UPDATE mymes_timetable SET projectname = '"+projectname+"',worktime = '"+worktime+"',workdate = '"+workdate+"',description = '"+description+"' where id ="+id;
+  console.log(updataSql);
+  db.query(updataSql,function(err,result){
+    if(!err){
+      res.json(JSON.stringify(result));
+    }else{
+      console.log("新增失败！！")
+    }
+  })
 })
 module.exports = router;
