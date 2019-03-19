@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>个人项目管理系统</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">  
+</head>
+<body class="sidebar-fixed header-fixed">
+        <div class="jumbotron text-center" style="margin-bottom:0">
+                <h1>个人项目管理系统</h1>
+                <p>myblog</p> 
+              </div>
+              
+              <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                  <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>                        
+                    </button>
+                    <a class="navbar-brand" href="/">BLOG</a>
+                  </div>
+                  <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav">
+                      <li class="active"><a href="/">主页</a></li>
+                      <li><a href="#">BLOG</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </nav>
+              
+              <div class="container">
+                <div class="row">
+                  <div class="col-sm-4">
+                    <ul class="nav nav-pills nav-stacked" id="mymes_postlist">
+                        <li class="active"><a href="#">文章列表</a></li>
+
+                    </ul>
+                    <hr class="hidden-sm hidden-md hidden-lg">
+                  </div>
+                  <div class="col-sm-8" id="contentSingle">
+                      <!-- 文章标题 -->
+                     <h2></h2>
+                     <!-- 文章正文 -->
+                     <p></p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="jumbotron text-center" style="margin-bottom:0">
+                <p>copyRight@ 版权所有 违者必究</p>
+              </div>
+<script src="./vendor/jquery/jquery.min.js"></script>
+<script src="./vendor/popper.js/popper.min.js"></script>
+<script src="./vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="./layer/layer.js"></script>
+<script src="./vendor/chart.js/chart.min.js"></script>
+<script src="./javascripts/carbon.js"></script>
+<script src="./javascripts/demo.js"></script>
+<script>
+    function GetQueryString(name)
+        {
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
+            if(r!=null)return  unescape(r[2]); return null;
+        }
+var id = GetQueryString("id");
+    $.ajax({
+        url:'/aticle',
+        type:'post',
+        data:{
+            id:id
+        },
+        dataType:'json',
+        success:function(data){
+            var data = JSON.parse(data);
+            $("#contentSingle h2").html(data[0].posttitle);
+            $("#contentSingle p").html(data[0].postcontent);
+            
+        }
+    })
+    // 加载所有文章
+    $.ajax({
+        url:'/postlist',
+        type:'POST',
+        dataType:'json',
+        success:function(data){
+            var data = JSON.parse(data);
+            $.each(data,function(index,item){
+                $("#mymes_postlist").append(
+                    "<li data-id='"
+                    +item.id
+                    +"' class=''><a href='"
+                    +"/aticle?id="
+                    +item.id
+                    +"' target='_blank'>"
+                    +item.posttitle
+                    +"</a></li>"
+                )
+            })
+        }
+    })
+</script>
+</body>
+</html>
+

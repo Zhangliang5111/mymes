@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>个人项目管理系统</title>
+    <link rel="stylesheet" href="./vendor/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="./vendor/font-awesome/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="./layer/skin/layer.css">
+    <link rel="stylesheet" href="./stylesheets/styles.css">
+    
+</head>
+<body class="sidebar-fixed header-fixed">
+<div class="page-wrapper">
+    <nav class="navbar page-header">
+        <a href="#" class="btn btn-link sidebar-mobile-toggle d-md-none mr-auto">
+            <i class="fa fa-bars"></i>
+        </a>
+
+        <a class="navbar-brand" href="#">
+            <img src="./images/logo.png" alt="logo">
+        </a>
+
+        <a href="#" class="btn btn-link sidebar-toggle d-md-down-none">
+            <i class="fa fa-bars"></i>
+        </a>
+
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item d-md-down-none">
+                <a href="#">
+                    <i class="fa fa-bell"></i>
+                    <span class="badge badge-pill badge-danger">5</span>
+                </a>
+            </li>
+
+            <li class="nav-item d-md-down-none">
+                <a href="#">
+                    <i class="fa fa-envelope-open"></i>
+                    <span class="badge badge-pill badge-danger">5</span>
+                </a>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="./images/avatar-1.png" class="avatar avatar-sm" alt="logo">
+                    <span class="small ml-1 d-md-down-none"></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <nav class="sidebar-nav">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link">
+                            <i class="icon icon-speedometer"></i> 首页
+                        </a>
+                    </li>              
+                    <li class="nav-item">
+                        <a href="/timetable" class="nav-link">
+                            <i class="icon icon-puzzle"></i> 工时
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/page" class="nav-link  active">
+                            <i class="icon icon-grid"></i> BLOG
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row ">
+                    <div id="toolbar" class="card-body">
+                        <input id="posttitle" type="text" class="form-control" placeholder="在此处输入文章标题">
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card">
+                            <textarea id="editor_id" name="content" class ="form-control"></textarea>
+                        </div>
+                        <button id="subblog" type="button" class="btn btn-primary">发布</button>
+                    </div>
+                    
+                    <a href="" target="_blank" title="">copyRight@ 版权所有 违者必究</a><a href="" target="_blank"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="./vendor/jquery/jquery.min.js"></script>
+<script src="./vendor/popper.js/popper.min.js"></script>
+<script src="./vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="./kindeditor/kindeditor-all-min.js"></script>
+<script src="./kindeditor/lang/zh-CN.js"></script>
+<script src="./layer/layer.js"></script>
+<script src="./vendor/chart.js/chart.min.js"></script>
+<script src="./javascripts/carbon.js"></script>
+<script src="./javascripts/demo.js"></script>
+<script>
+KindEditor.ready(function(K) {
+     window.editor = K.create('#editor_id');
+    
+});    
+$("#subblog").click(function(){
+    editor.sync();
+    var posttitle = $("#posttitle").val();
+    var postcontent = $('#editor_id').val(); 
+    $.ajax({
+        url:'/addpost',
+        type:'POST',
+        data:{
+            posttitle:posttitle,
+            postcontent:postcontent
+        },
+        dataType:'json',
+        success:function(){
+            layer.msg("发布成功")
+            setTimeout(function(){
+                window.location.href="http://localhost:3300/page"
+            },500)
+        }
+    })
+
+})
+</script>
+</body>
+</html>
+

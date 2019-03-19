@@ -15,6 +15,14 @@ router.get('/timetable',function(req,res,next){
 router.get('/page',function(req,res,next){
   res.render('page',{title:'文章页'});
 });
+//写文章
+router.get('/post',function(req,res,next){
+  res.render('post',{title:'写文章'})
+});
+//文章详情
+router.get('/aticle',function(req,res,next){
+  res.render('aticle',{title:'文章详情'})
+});
 // 查询列表
 router.post('/list',function(req,res){
   var sql = 'SELECT * FROM mymes_timetable';
@@ -80,5 +88,42 @@ router.post('/updata',function(req,res){
       console.log("新增失败！！")
     }
   })
+});
+//文章列表
+router.post('/postlist',function(req,res){
+  var postListSql =  'SELECT * FROM mymes_post';
+  db.query(postListSql,function(err,result){
+    if(!err){
+      res.json(JSON.stringify(result));
+    }else{
+      console.log("数据加载失败")
+    }
+  })
+});
+// 发布文章
+router.post('/addpost',function(req,res){
+  var postTitle = req.body.posttitle;
+  var postContent = req.body.postcontent;
+  var postSql = "INSERT INTO mymes_post(posttitle,postcontent) values ('"+postTitle+"','"+postContent+"')";
+  db.query(postSql,function(err,result){
+    if(!err){
+      res.json(JSON.stringify(result));
+    }else{
+      console.log("发布失败")
+    }
+  })
 })
+//文章详情页
+router.post('/aticle',function(req,res){
+    var id = req.body.id;
+    var aticleSql = 'SELECT *FROM mymes_post where id ='+id;
+    console.log(aticleSql)
+    db.query(aticleSql,function(err,result){
+      if(!err){
+        res.json(JSON.stringify(result));
+      }else{
+        console.log('数据加载失败');
+      }
+    })
+});
 module.exports = router;

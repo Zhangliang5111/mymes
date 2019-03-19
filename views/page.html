@@ -67,7 +67,7 @@
 
                     <li class="nav-item">
                         <a href="/page" class="nav-link  active">
-                            <i class="icon icon-grid"></i> 文章
+                            <i class="icon icon-grid"></i> BLOG
                         </a>
                     </li>
                 </ul>
@@ -76,14 +76,15 @@
         <div class="content">
             <div class="container-fluid">
                 <div class="row ">
+                    <div id="toolbar" class="card-body">
+                        <button id="btn_add" type="button" class="btn btn-default">
+                            <a href="/post">写文章</a>
+                        </button>
+                    </div>
                     <div class="col-md-12">
                         <div class="card">
-                            <ul class="list-group">
-                                <li class="list-group-item"><a href="#" target="_blank">小米取消小米9抢购活动后：第三方售价暴涨500元</a><span style="float:right">2019-02-02</span></li>
-                                <li class="list-group-item"><a href="#" target="_blank">三星回应商城被薅羊毛Bug：退款，补偿蓝牙耳机</a><span style="float:right">2019-02-02</span></li>
-                                <li class="list-group-item"><a href="#" target="_blank">小米Pocophone F2跑分疑曝光 骁龙855+Android Q</a><span style="float:right">2019-02-02</span></li>
-                                <li class="list-group-item"><a href="#" target="_blank">中兴全面屏新机曝光：近乎100%屏占比、侧滑设计</a><span style="float:right">2019-02-02</span></li>
-                                <li class="list-group-item"><a href="#" target="_blank">雷蛇未退出电竞手机市场 新机型2019年上市</a><span style="float:right">2019-02-02</span></li>
+                            <ul class="list-group" id="mymes_postlist">
+                                <!-- 此处存放文章列表 -->
                             </ul>
                         </div>
                     </div>
@@ -101,22 +102,28 @@
 <script src="./javascripts/carbon.js"></script>
 <script src="./javascripts/demo.js"></script>
 <script>
-$.ajax({
-    url:'/list',
-    type:'post',
-    dataType:'json',
-    success:function(data){
-        $.each(data,function(index,item){
-            $(".prolist").append(
-                "<div class='col-md-3'><div class='card p-4'><div class='card-body d-flex justify-content-between align-items-center'><div><span class='h4 d-block font-weight-normal mb-2'>"+
-item.worktime+
-"</span><span class='font-weight-light'>总工时(hour)</span></div><div class='h2 text-muted'><span class='icon'>"+
-item.projectname+
-"</span></div></div></div></div>"
-            )
-        })
-    }
-})</script>
+    $.ajax({
+        url:'/postlist',
+        type:'POST',
+        dataType:'json',
+        success:function(data){
+            var data = JSON.parse(data);
+            $.each(data,function(index,item){
+                $("#mymes_postlist").append(
+                    "<li data-id='"
+                    +item.id
+                    +"' class='list-group-item'><a href='"
+                    +"/aticle?id="
+                    +item.id
+                    +"' target='_blank'>"
+                    +item.posttitle
+                    +"</a><span style='float:right'>2019-03-19</span></li>"
+                )
+            })
+        }
+    })
+
+</script>
 </body>
 </html>
 

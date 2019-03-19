@@ -20,3 +20,13 @@ CREATE TABLE `mymes_timetable` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工时表';
 
+-- ----------------------------
+-- Table structure for mymes_post
+-- ----------------------------
+DROP TABLE IF EXISTS `mymes_post`;
+CREATE TABLE `mymes_post` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `posttitle` varchar(255) DEFAULT NULL COMMENT '文章标题',
+  `postcontent` text(255) DEFAULT NULL COMMENT '文章正文',
+  PRIMARY KEY (`id`)
+)ENGINE = InnoDB DEFAULT CHARSET=utf8 COMMENT='文章标题';
