@@ -11,6 +11,10 @@ router.get('/', function(req, res, next) {
 router.get('/timetable',function(req,res,next){
   res.render('timetable',{title:'工时统计'});
 });
+// 文章列表页
+router.get('/page',function(req,res,next){
+  res.render('page',{title:'文章页'});
+});
 // 查询列表
 router.post('/list',function(req,res){
   var sql = 'SELECT * FROM mymes_timetable';
