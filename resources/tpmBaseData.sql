@@ -30,3 +30,14 @@ CREATE TABLE `mymes_post` (
   `postcontent` text(255) DEFAULT NULL COMMENT '文章正文',
   PRIMARY KEY (`id`)
 )ENGINE = InnoDB DEFAULT CHARSET=utf8 COMMENT='文章标题';
+-- ----------------------------
+-- Table structure for mymes_user
+-- ----------------------------
+DROP TABLE IF EXISTS `mymes_user`;
+CREATE TABLE `mymes_user`(
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL COMMENT '姓名',
+  `count` varchar(255) DEFAULT NULL COMMENT '账号',
+  `password` varchar(255) DEFAULT NULL COMMENT '密码',
+  PRIMARY KEY(`id`)
+)ENGINE = InnoDB DEFAULT CHARSET=utf8 COMMENT= '用户';

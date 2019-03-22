@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>登录 - 个人管理系统</title>
+    <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/layer/skin/layer.css">
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/layer/layer.js"></script>
+    <style>
+        body{
+            background: url('/images/bg.jpg') no-repeat scroll;
+            background-size: cover;
+        }
+        .form-group{
+            margin-bottom: 15px;
+            overflow: hidden;
+            line-height: 37px;
+        }
+        .container {
+            background: rgba(255,255,255,0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="margin-top:15%;padding-top:30px;width: 30%;">  
+        <div class="form-group">
+            <label for="count" class="col-sm-2 control-label">账号:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="count" 
+                       placeholder="请输入账号">
+            </div>
+        </div>
+        <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">姓名:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="name" 
+                           placeholder="请输入姓名">
+                </div>
+            </div>
+        <div class="form-group">
+            <label for="password" class="col-sm-2 control-label">密码:</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" id="password" 
+                       placeholder="请输入密码">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default" id="res_btn">注册</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        $("#res_btn").click(function(){
+            var count=$("#count").val();
+            var name=$("#name").val();
+            var pwd=$("#password").val();
+            if(count==""|pwd==""){
+                layer.msg('账号或者密码不能为空')
+            }else{
+                $.ajax({
+                url:'/user/res',
+                type:'POST',
+                data:{
+                    count:count,
+                    pwd:pwd,
+                    name:name
+                },
+                success:function(res){
+                    if(res.status==1){
+                        layer.msg(res.msg);
+                    }else{
+                        layer.msg(res.msg)
+                        setTimeout(function(){
+                        window.location.href="http://localhost:3300"
+                    },500)
+                    }
+                   
+                }
+           })
+            }
+            
+        })
+    </script>
+</body>
+</html>
