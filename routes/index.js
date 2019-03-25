@@ -4,24 +4,43 @@ var db = require('./db/db')
 
 /* 首页 */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: '首页' });
+  res.render('index', { username: req.cookies.username });
   
 });
 // 工时
 router.get('/timetable',function(req,res,next){
-  res.render('timetable',{title:'工时统计'});
+  if(req.cookies.username==undefined){
+    return res.redirect('/user/login');//页面重定向；
+  }else{
+    res.render('timetable',{ username: req.cookies.username });
+  }
 });
 // 文章列表页
 router.get('/page',function(req,res,next){
-  res.render('page',{title:'文章页'});
+  if(req.cookies.username==undefined){
+    return res.redirect('/user/login');//页面重定向；
+  }else{
+    res.render('page',{ username: req.cookies.username });
+  }
+  
 });
 //写文章
 router.get('/post',function(req,res,next){
-  res.render('post',{title:'写文章'})
+  if(req.cookies.username==undefined){
+    return res.redirect('/user/login');//页面重定向；
+  }else{
+    res.render('post',{ username: req.cookies.username })
+  }
+ 
 });
 //文章详情
 router.get('/aticle',function(req,res,next){
-  res.render('aticle',{title:'文章详情'})
+  if(req.cookies.username==undefined){
+    return res.redirect('/user/login');//页面重定向；
+  }else{
+    res.render('aticle',{ username: req.cookies.username })
+  }
+  
 });
 // 查询列表
 router.post('/list',function(req,res){

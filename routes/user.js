@@ -23,6 +23,7 @@ router.post('/login',function(req,res){
       res.json({'status':1,'msg':'账户或者密码错误'})
       return;
      }else{
+      res.cookie("username", count, {maxAge: 1000*60*60,httpOnly: true}); //, signed: true
       res.json({'status':0})
      }  
   })

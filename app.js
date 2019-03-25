@@ -11,15 +11,6 @@ var usersRouter = require('./routes/user');
 // var timetableRouter = require('./routes/index');
 
 var app = express();
-app.use(session({
-  secret :  'secret', // 对session id 相关的cookie 进行签名
-  resave : true,
-  saveUninitialized: false, // 是否保存未初始化的会话
-  cookie : {
-      maxAge : 1000 * 60 * 3, // 设置 session 的有效时间，单位毫秒
-  },
-}));
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
@@ -31,29 +22,24 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 //登录拦截器
-app.all('/*', function(req, res, next){
-  if (req.session.user) {
+app.use(function (req, res, next) {
+  var url = req.originalUrl;//获取浏览器中当前访问的nodejs路由地址；
+  var userCookies=req.cookies.username; //获取客户端存取的cookie,userCookies为cookie的名称；//有时拿不到cookie值，可能是因为拦截器位置放错，获取该cookie的方式是依赖于nodejs自带的cookie模块，//因此，获取cookie必须在1,2步之后才能使用，否则拿到的cookie就是undefined.
+  if(url=='/user/login'&&userCookies!=undefined){ //通过判断控制用户登录后不能访问登录页面；
+      return res.redirect('/');//页面重定向；
+  }else{
     next();
-  }else {
-    var arr = req.url.split('/');// 解析用户请求的路径
-
-    for (var i = 0, length = arr.length; i < length; i++) {// 去除 GET 请求路径上携带的参数
-      arr[i] = arr[i].split('?')[0];
-    }
-    if (arr.length > 1 && arr[1] == '') {// 判断请求路径是否为根、登录、注册、登出，如果是不做拦截
-      next();
-    } else if (arr.length > 2 && arr[1] == 'user' && (arr[2] == 'res' || arr[2] == 'login' || arr[2] == 'logout' || arr[2].indexOf('login') >= 0 )) {
-      next();
-    } else {  // 登录拦截
-      req.session.originalUrl = req.originalUrl ? req.originalUrl : null;  // 记录用户原始请求路径
-     console.log("错误：请先登录")
-      res.redirect('/user/login');  // 将用户重定向到登录页面
-    }
   }
+  
 });
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
 // app.use('/timetable',timetableRouter);
+app.get('/user/logout', function (req, res) {
+    res.clearCookie('username');
+    return res.redirect('/user/login');//页面重定向；
+});
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
