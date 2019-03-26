@@ -99,7 +99,7 @@
                                                 <input type="text" class="form-control" id="txt_search_code">
                                             </div>
                                             <div class="btn_query col-sm-4" style="text-align:left;">
-                                                <button type="button" style="" id="btn_query" onclick="serachUser()" class="btn btn-primary">查询</button>
+                                                <button type="button" id="btn_query" class="btn btn-primary">查询</button>
                                             </div>
                                         </div>
                                     </form>
@@ -146,11 +146,22 @@
 <script src="./javascripts/main.js"></script>
 <script>
 // 加载列表
-$.ajax({
+
+AjaxList();
+$('#btn_query').click(function(){
+    var projectname = $("#txt_search_name").val();
+    AjaxList(projectname);
+})
+function AjaxList(projectname){
+    $.ajax({
     url:'/list',
     type:'post',
+    data:{
+        projectname:projectname
+    },
     dataType:'json',
     success:function(data){
+        $(".wktlist tbody").html("");
         $.each(data,function(index,item){
             //console.log(item.id)
             $(".wktlist tbody").append(
@@ -169,6 +180,7 @@ $.ajax({
         })
     }
 })
+}
 // 删除列表
 $("#btn_delete").click(function(){
     var ids = [];

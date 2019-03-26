@@ -35,16 +35,17 @@ router.get('/post',function(req,res,next){
 });
 //文章详情
 router.get('/aticle',function(req,res,next){
-  if(req.cookies.username==undefined){
-    return res.redirect('/user/login');//页面重定向；
-  }else{
-    res.render('aticle',{ username: req.cookies.username })
-  }
+  res.render('aticle',{ username: req.cookies.username })
   
 });
 // 查询列表
 router.post('/list',function(req,res){
-  var sql = 'SELECT * FROM mymes_timetable';
+  var projectname = req.body.projectname;
+  if(projectname != undefined){
+    var sql = 'SELECT * FROM mymes_timetable where projectname LIKE '+'"%'+projectname+'%"';
+  }else{
+    var sql = 'SELECT * FROM mymes_timetable';
+  }
   db.query(sql,function(err,result){
     if(!err){
       res.json(result)
