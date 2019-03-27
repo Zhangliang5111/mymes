@@ -40,6 +40,12 @@ router.get('/aticle',function(req,res,next){
 });
 // 查询列表
 router.post('/list',function(req,res){
+  //---------允许跨域代码----------
+  // res.header("Access-Control-Allow-Origin", "http://localhost:8080");
+  // res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+  // res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  // res.header('Access-Control-Allow-Headers', 'Content-Type');
+  //---------允许跨域代码----------
   var projectname = req.body.projectname;
   if(projectname != undefined){
     var sql = 'SELECT * FROM mymes_timetable where projectname LIKE '+'"%'+projectname+'%"';
